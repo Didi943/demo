@@ -25,7 +25,10 @@ pipeline {
                 }
             }
             steps {
-                sh 'mvn clean compile'
+                   dir('demo') {    // équivalent to "cd demo" in a shell
+                        sh 'mvn clean compile'
+                    }
+               
             }
         }
 
