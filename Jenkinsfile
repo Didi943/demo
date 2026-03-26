@@ -11,11 +11,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+        
 
         stage('Build') {
             agent {
@@ -25,9 +21,9 @@ pipeline {
                 }
             }
             steps {
-                   dir('demo') {    // équivalent to "cd demo" in a shell
+                      
                         sh 'mvn clean compile'
-                    }
+                    
                
             }
         }
