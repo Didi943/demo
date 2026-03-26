@@ -1,51 +1,40 @@
 pipeline {
-    agent any
-
-    parameters { 
-        choice(
-            name: 'BROWSER', 
-            choices: ['chrome', 'firefox', 'edge'], 
-            description: 'Select the browser to run the tests'
-        )
-    }
-
-    stages {
-
+     agent 
+    {
+        // Environnrement Node, npm, navigateur chromium, git
         
+        docker {
+            image  'selenium/standalone-chrome:nightly'
+            args '--user=root --entrypoint=""'
+        }
+          
 
-        stage('Build') {
-            agent {
-                docker {
-                    image 'maven:3.8.4-openjdk-17'
-                    args '-v /root/.m2:/root/.m2'
-                }
-            }
-            steps {
-                      
-                        sh 'mvn clean compile'
-                    
-               
+    }
+
+    // paramètre pour ajouter les tags et rapport
+    // tags
+    // rapport
+    parameters{
+         
+        choice(name:"browser",choices:["chrome","firefox","edge"],description:"choisissez le navigateur")
+       
+    }
+    // browser if browser == chromium on lance les testes sinon on affiche aucun test est lancé
+
+    stages{
+        stage('install dépendence'){
+            steps{
+                sh 'mvn --version'
+                sh 'mvn clean compile'
             }
         }
-
-        stage('Run Selenium Tests') {
-            steps {
-                script {
-                    browserImage = ""  
-
-                    if (params.BROWSER == "chrome") {
-                        browserImage = "selenium/standalone-chrome:latest"
-                    } else if (params.BROWSER == "firefox") {
-                        browserImage = "selenium/standalone-firefox:latest"
-                    } else if (params.BROWSER == "edge") {
-                        browserImage = "selenium/standalone-edge:latest"
-                    }
-
-                    docker.image(browserImage).inside('-v /dev/shm:/dev/shm') {
-                        sh 'mvn test'
-                    }
-                }
+        stage('vérifier les pré-requis'){
+            steps{
+                         sh "mvn test -Dtest=Authentification -Dbrowser=${params.browser}"
+                 
             }
         }
     }
+
+
 }
