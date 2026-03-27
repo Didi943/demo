@@ -88,7 +88,7 @@ pipeline {
             steps {
                 script {
                     // Construction dynamique de la commande Maven
-                    def mvnCmd = "mvn test"
+                    def mvnCmd = "mvn test -Dtest=LoginPom"
                    // mvnCmd    += " -Dbrowser=${params.BROWSER}"
                    
 
