@@ -83,6 +83,12 @@ pipeline {
             
             }
         }
+stage('Check Chrome') {
+    steps {
+        sh 'google-chrome --version || echo "Chrome not found"'
+        sh 'which chromedriver || echo "ChromeDriver not found"'
+    }
+}
 
         stage('🧪 Tests Selenium') {
             steps {
