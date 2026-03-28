@@ -93,7 +93,7 @@ pipeline {
                    
 
                   
-                  echo "▶️  Commande : ${mvnCmd}"
+                  echo "  Commande : ${mvnCmd}"
                     sh mvnCmd
                 }
             }
