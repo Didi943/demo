@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            // ✅ OPTION A : image Selenium qui inclut Chrome + ChromeDriver + JDK
+            //  OPTION A : image Selenium qui inclut Chrome + ChromeDriver + JDK
             image 'selenium/standalone-chrome:latest'
             args '''
                 -v /root/.m2:/root/.m2
@@ -10,7 +10,7 @@ pipeline {
                 --entrypoint=""
             '''
 
-            // ❌ ANCIENNE IMAGE (pas de Chrome dedans) :
+            //  ANCIENNE IMAGE (pas de Chrome dedans) :
             // image 'maven:3.9.6-eclipse-temurin-17'
         }
     }
@@ -25,7 +25,7 @@ pipeline {
 
     stages {
 
-        stage('🔧 Installation Maven') {
+        stage(' Installation Maven') {
             steps {
                 // L'image Selenium n'a pas Maven → on l'installe
                 sh '''
@@ -36,20 +36,20 @@ pipeline {
             }
         }
 
-        stage('🔧 Compilation') {
+        stage(' Compilation') {
             steps {
                 sh 'mvn clean compile'
             }
         }
 
-        stage('✅ Vérification Chrome') {
+        stage(' Vérification Chrome') {
             steps {
                 sh 'google-chrome --version'
                 sh 'chromedriver --version'
             }
         }
 
-        stage('🧪 Tests Selenium') {
+        stage(' Tests Selenium') {
             steps {
                 script {
                     def mvnCmd = "mvn test -Dtest=LoginPom -Dbrowser=${params.BROWSER}"
@@ -63,10 +63,10 @@ pipeline {
     post {
         
         failure {
-            echo '❌ Pipeline échoué'
+            echo ' Pipeline échoué'
         }
         success {
-            echo '✅ Pipeline réussi'
+            echo ' Pipeline réussi'
         }
     }
 }
